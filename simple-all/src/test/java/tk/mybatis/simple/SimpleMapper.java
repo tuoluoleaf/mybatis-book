@@ -6,7 +6,7 @@ import tk.mybatis.simple.model.Country;
 
 public interface SimpleMapper {
 
-	Country selectCountry(Long id);
-	
-	List<Country> selectAll();
+    Country selectCountry(Long id);
+
+    List<Country> selectAll();
 }

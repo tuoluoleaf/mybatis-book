@@ -37,7 +37,7 @@ public class SimpleTest {
 
     @Test
     public void test() throws IOException, SQLException {
-    	//使用 log4j 记录日志，前提是已经配置好了 log4j 依赖
+        //使用 log4j 记录日志，前提是已经配置好了 log4j 依赖
         LogFactory.useLog4JLogging();
         //创建配置对象
         final Configuration config = new Configuration();
@@ -45,7 +45,7 @@ public class SimpleTest {
         config.setCacheEnabled(true);
         config.setLazyLoadingEnabled(false);
         config.setAggressiveLazyLoading(true);
-        
+
         //添加拦截器
         SimpleInterceptor interceptor1 = new SimpleInterceptor("拦截器 1");
         SimpleInterceptor interceptor2 = new SimpleInterceptor("拦截器 2");
@@ -66,8 +66,6 @@ public class SimpleTest {
         //config.newExecutor 会将符合条件的拦截器添加到 Executor 代理链上
         final Executor executor = config.newExecutor(transaction);
 
-        
-
 
         //类型处理注册器
         //自己写 TypeHandler 的时候可以参考该注册器中已经存在的大量实现
@@ -78,21 +76,21 @@ public class SimpleTest {
         //创建静态 SqlSource
         //最简单的，相当于从 xml 或接口注解获取 SQL，创建合适的 SqlSource对象
         StaticSqlSource sqlSource = new StaticSqlSource(
-        		config, "SELECT * FROM country WHERE id = ?");
+                config, "SELECT * FROM country WHERE id = ?");
 
         //由于上面的 SQL 有个参数 id，这里需要提供 ParameterMapping(参数映射)
         List<ParameterMapping> parameterMappings = new ArrayList<ParameterMapping>();
         //通过 ParameterMapping.Builder 创建 ParameterMapping
         parameterMappings.add(new ParameterMapping.Builder(
-        		config, "id", registry.getTypeHandler(Long.class)).build());
+                config, "id", registry.getTypeHandler(Long.class)).build());
         ParameterMap.Builder paramBuilder = new ParameterMap.Builder(
-        		config, "defaultParameterMap", Country.class, parameterMappings);
+                config, "defaultParameterMap", Country.class, parameterMappings);
 
         //创建结果映射配置
         @SuppressWarnings("serial")
-		ResultMap resultMap = new ResultMap.Builder(config, "defaultResultMap", Country.class,
+        ResultMap resultMap = new ResultMap.Builder(config, "defaultResultMap", Country.class,
                 new ArrayList<ResultMapping>() {
-					{
+                    {
                         add(new ResultMapping.Builder(config, "id", "id", Long.class).build());
                         add(new ResultMapping.Builder(config, "countryname", "countryname", String.class).build());
                         add(new ResultMapping.Builder(config, "countrycode", "countrycode", registry.getTypeHandler(String.class)
@@ -113,7 +111,7 @@ public class SimpleTest {
                                         ))));
         //创建 MappedStatement
         MappedStatement.Builder msBuilder = new MappedStatement.Builder(
-        		config, "tk.mybatis.simple.SimpleMapper.selectCountry", sqlSource, SqlCommandType.SELECT);
+                config, "tk.mybatis.simple.SimpleMapper.selectCountry", sqlSource, SqlCommandType.SELECT);
         msBuilder.parameterMap(paramBuilder.build());
         List<ResultMap> resultMaps = new ArrayList<ResultMap>();
         resultMaps.add(resultMap);
@@ -128,7 +126,7 @@ public class SimpleTest {
         List<Country> countries = executor.query(ms, 1L, RowBounds.DEFAULT, Executor.NO_RESULT_HANDLER);
 
         for (Country country : countries) {
-        	System.out.println(country.getCountryname());
+            System.out.println(country.getCountryname());
         }
 
         //第二种，首先添加 m s到 config
@@ -137,7 +135,7 @@ public class SimpleTest {
         SqlSession sqlSession = new DefaultSqlSession(config, executor, false);
         //查询
         Country country = sqlSession.selectOne("selectCountry", 2L);
-    	System.out.println(country.getCountryname());
+        System.out.println(country.getCountryname());
 
         //第三种 接口方式，创建接口代理工厂类
         MapperProxyFactory<SimpleMapper> mapperProxyFactory = new MapperProxyFactory<SimpleMapper>(SimpleMapper.class);
@@ -145,7 +143,7 @@ public class SimpleTest {
         SimpleMapper simpleMapper = mapperProxyFactory.newInstance(sqlSession);
         //执行方法
         country = simpleMapper.selectCountry(3L);
-    	System.out.println(country.getCountryname());
+        System.out.println(country.getCountryname());
         //关闭
         sqlSession.close();
     }

@@ -1,16 +1,16 @@
 package tk.mybatis.simple.type;
 
 public enum Enabled {
-	enabled(1), //启用
-	disabled(0);//禁用
-	
-	private final int value;
+    enabled(1), //启用
+    disabled(0);//禁用
 
-	private Enabled(int value) {
-		this.value = value;
-	}
+    private final int value;
 
-	public int getValue() {
-		return value;
-	}
+    private Enabled(int value) {
+        this.value = value;
+    }
+
+    public int getValue() {
+        return value;
+    }
 }

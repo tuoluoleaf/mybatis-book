@@ -12,17 +12,17 @@ import tk.mybatis.springboot.service.UserService;
 
 @RestController
 public class UserController {
-	
-	@Autowired
-	private UserService userService;
-	
-	@RequestMapping("users/{id}")
-	SysUser user(@PathVariable("id") Long id){
-		return userService.findById(id);
-	}
-	
-	@RequestMapping("users")
-	List<SysUser> users(){
-		return userService.findAll();
-	}
+
+    @Autowired
+    private UserService userService;
+
+    @RequestMapping("users/{id}")
+    SysUser user(@PathVariable("id") Long id) {
+        return userService.findById(id);
+    }
+
+    @RequestMapping("users")
+    List<SysUser> users() {
+        return userService.findAll();
+    }
 }

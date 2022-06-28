@@ -8,10 +8,10 @@ import tk.mybatis.springboot.model.Country;
 
 @Mapper
 public interface CountryMapper {
-	/**
-	 * 查询全部数据
-	 * 
-	 * @return
-	 */
-	List<Country> selectAll();
+    /**
+     * 查询全部数据
+     *
+     * @return
+     */
+    List<Country> selectAll();
 }
